@@ -33,12 +33,12 @@ func eventsFunc(suite string, out io.Writer) Formatter {
 
 	formatter := &events{
 		basefmt: basefmt{
+			suite:   suite,
 			started: time.Now(),
 			indent:  2,
 			out:     out,
 		},
 		runID: hex.EncodeToString(hasher.Sum(nil)),
-		suite: suite,
 	}
 
 	formatter.event(&struct {
@@ -60,7 +60,6 @@ type events struct {
 	basefmt
 
 	runID string
-	suite string
 
 	// currently running feature path, to be part of id.
 	// this is sadly not passed by gherkin nodes.

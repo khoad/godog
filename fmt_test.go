@@ -15,6 +15,7 @@ type testFormatter struct {
 func testFormatterFunc(suite string, out io.Writer) Formatter {
 	return &testFormatter{
 		basefmt: basefmt{
+			suite:   suite,
 			started: time.Now(),
 			indent:  2,
 			out:     out,

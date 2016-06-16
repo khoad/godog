@@ -27,11 +27,11 @@ var snippetHelperFuncs = template.FuncMap{
 }
 
 var undefinedSnippetsTpl = template.Must(template.New("snippets").Funcs(snippetHelperFuncs).Parse(`
-{{ range . }}func {{ .Method }}({{ .Args }}) error {
+{{ range .Snips }}func {{ .Method }}({{ .Args }}) error {
 	return godog.ErrPending
 }
 
-{{end}}func FeatureContext(s *godog.Suite) { {{ range . }}
+{{end}}func {{.Suite}}Context(s *godog.Suite) { {{ range .Snips }}
 	s.Step({{ backticked .Expr }}, {{ .Method }}){{end}}
 }
 `))
@@ -155,6 +155,7 @@ func (f stepResult) line() string {
 }
 
 type basefmt struct {
+	suite  string
 	out    io.Writer
 	owner  interface{}
 	indent int
@@ -410,8 +411,13 @@ func (f *basefmt) snippets() string {
 		}
 	}
 
+	data := struct {
+		Suite string
+		Snips []*undefinedSnippet
+	}{strings.Title(f.suite), snips}
+
 	var buf bytes.Buffer
-	if err := undefinedSnippetsTpl.Execute(&buf, snips); err != nil {
+	if err := undefinedSnippetsTpl.Execute(&buf, &data); err != nil {
 		panic(err)
 	}
 	return buf.String()

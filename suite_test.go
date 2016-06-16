@@ -11,7 +11,7 @@ import (
 	"github.com/DATA-DOG/godog/gherkin"
 )
 
-func SuiteContext(s *Suite) {
+func GodogContext(s *Suite) {
 	c := &suiteContext{}
 
 	s.BeforeScenario(c.ResetBeforeEachScenario)
@@ -69,7 +69,7 @@ func (s *suiteContext) ResetBeforeEachScenario(interface{}) {
 	s.paths = []string{}
 	s.testedSuite = &Suite{}
 	// our tested suite will have the same context registered
-	SuiteContext(s.testedSuite)
+	GodogContext(s.testedSuite)
 	// reset all fired events
 	s.events = []*firedEvent{}
 }

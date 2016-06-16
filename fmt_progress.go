@@ -17,6 +17,7 @@ func init() {
 func progressFunc(suite string, out io.Writer) Formatter {
 	return &progress{
 		basefmt: basefmt{
+			suite:   suite,
 			started: time.Now(),
 			indent:  2,
 			out:     out,

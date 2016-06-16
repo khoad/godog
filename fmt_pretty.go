@@ -19,6 +19,7 @@ func init() {
 func prettyFunc(suite string, out io.Writer) Formatter {
 	return &pretty{
 		basefmt: basefmt{
+			suite:   suite,
 			started: time.Now(),
 			indent:  2,
 			out:     out,
